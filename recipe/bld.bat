@@ -1,7 +1,7 @@
 @echo off
 setlocal EnableDelayedExpansion
 
-call mamba -y leiningen
+call mamba create -yp %SRC_DIR%\bootstrap leiningen
 call :bootstrap_leiningen
 call :prepare_licenses
 
