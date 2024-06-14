@@ -14,7 +14,6 @@ source:
     folder: leiningen-jar
 
 build:
-  noarch: generic
   number: 0
 
 requirements:
