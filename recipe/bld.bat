@@ -18,7 +18,7 @@ goto :EOF
 :bootstrap_leiningen
 cd "%SRC_DIR%"\leiningen-src
   echo "Bootstrapping ...
-  bash %BUILD_PREFIX%\bin\lein bootstrap > nul
+  %RECIPE_DIR%\scripts\lein bootstrap > nul
   if errorlevel 1 exit 1
   echo "Third party licenses ...
   call mvn license:add-third-party -Dlicense.thirdPartyFile=THIRD-PARTY.txt > nul
