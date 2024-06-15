@@ -19,11 +19,11 @@ goto :EOF
 :: --- Functions ---
 :bootstrap_leiningen
 cd "%SRC_DIR%"\leiningen-src
-  echo "Bootstrapping ...
+  echo "Bootstrapping ..."
   set "LEIN_JAR=%BUILD_PREFIX%\lib\leiningen\libexec\leiningen-%PKG_VERSION%-standalone.jar"
   %RECIPE_DIR%\scripts\lein bootstrap > nul
   if errorlevel 1 exit 1
-  echo "Third party licenses ...
+  echo "Third party licenses ..."
   call mvn license:add-third-party -Dlicense.thirdPartyFile=THIRD-PARTY.txt > nul
   if errorlevel 1 exit 1
   cd %SRC_DIR%
@@ -31,7 +31,7 @@ goto :EOF
 
 :build_uberjar
 cd "%SRC_DIR%"\leiningen-src
-  echo "Uberjar ...
+  echo "Uberjar ..."
   call bin\lein uberjar > nul
   if errorlevel 1 exit 1
   cd %SRC_DIR%
