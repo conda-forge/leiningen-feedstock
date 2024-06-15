@@ -11,6 +11,7 @@ source:
   folder: leiningen-src
 
 build:
+  noarch: generic
   number: 0
 
 requirements:
