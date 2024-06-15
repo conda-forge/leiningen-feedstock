@@ -2,7 +2,7 @@
 setlocal EnableDelayedExpansion
 
 :: call mamba install -y leiningen
-call :install_leiningen "%SRC_DIR%\leiningen-src\target" "%BUILD_PREFIX%"
+call :install_leiningen "%SRC_DIR%\leiningen-jar" "%BUILD_PREFIX%"
 if errorlevel 1 exit 1
 set "PATH=%BUILD_PREFIX%\Scripts;%BUILD_PREFIX%\bin;%PATH%"
 call :bootstrap_leiningen
