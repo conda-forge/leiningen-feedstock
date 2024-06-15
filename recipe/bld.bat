@@ -1,8 +1,7 @@
 @echo off
 setlocal EnableDelayedExpansion
 
-call mamba create -yp %SRC_DIR%\bootstrap leiningen
-set "PATH=%SRC_DIR%\bootstrap\Scripts;%PATH%"
+call mamba install -y leiningen
 call :bootstrap_leiningen
 call :prepare_licenses
 
