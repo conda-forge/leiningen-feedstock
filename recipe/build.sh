@@ -24,7 +24,8 @@ install_leiningen() {
 # --- Main ---
 
 # Install the latest conda version of leiningen
-mamba install -y leiningen
+mamba create -yp "${SRC_DIR}"/bootstrap leiningen
+export PATH="${SRC_DIR}"/bootstrap/bin:$PATH
 
 # Create bootstrap from source and extract the THIRD-PARTY.txt file
 cd "${SRC_DIR}"/leiningen-src/leiningen-core
