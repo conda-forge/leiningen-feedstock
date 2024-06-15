@@ -50,6 +50,17 @@ mkdir %LIBEXEC_DIR%
 copy %RECIPE_DIR%\scripts\lein.bat %PREFIX%\Scripts\lein.bat > nul
 if errorlevel 1 exit 1
 
+sel "lein_file=%PREFIX%\Scripts\lein.bat"
+for /f "delims=" %%i in (%lein_file%) do (
+    set "line=%%i"
+    if "!line:~0,13!"=="set LEIN_VERSION" (
+        echo set LEIN_VERSION=%PKG_VERSION%>> "%temp_file%"
+    ) else (
+        echo %%i>> "_%lein_file%"
+    )
+)
+move /Y "_%lein_file%" "%lein_file%"
+
 install -m644 %_TARGET%\leiningen-%PKG_VERSION%-standalone.jar %LIBEXEC_DIR%
 goto :EOF
 
