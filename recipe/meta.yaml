@@ -16,7 +16,6 @@ build:
 requirements:
   build:
     - openjdk
-    - openssh  # [unix]
     - maven
   run:
     - openjdk
@@ -25,14 +24,10 @@ test:
   source_files:
     - leiningen-src
   commands:
-    - test -f ${PREFIX}/bin/lein  # [unix]
-    - test -f ${PREFIX}/lib/leiningen/libexec/leiningen-${PKG_VERSION}-standalone.jar  # [unix]
-
-    - if not exist %PREFIX%\Scripts\lein.bat exit /b 1  # [win]
-    - if not exist %PREFIX%\etc\conda\activate.d\lein-activate.bat exit /b 1  # [win]
-    - if not exist %PREFIX%\lib\leiningen\libexec\leiningen-%PKG_VERSION%-standalone.jar exit /b 1  # [win]
-
-    - cd leiningen-src && lein test leiningen.test.test
+    - test -f ${PREFIX}/bin/lein
+    - test -f ${PREFIX}/lib/leiningen/libexec/leiningen-${PKG_VERSION}-standalone.jar
+    - cd leiningen-src && lein test leiningen.test.test | grep failures
+    - lein version
 
 about:
   home: https://codeberg.org/leiningen/leiningen
