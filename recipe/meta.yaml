@@ -12,12 +12,11 @@ source:
 
 build:
   noarch: generic
-  number: 3
+  number: 4
 
 requirements:
   build:
     - openjdk
-    - openssh
     - maven
   run:
     - openjdk
@@ -28,7 +27,8 @@ test:
   commands:
     - test -f ${PREFIX}/bin/lein
     - test -f ${PREFIX}/lib/leiningen/libexec/leiningen-${PKG_VERSION}-standalone.jar
-    - cd leiningen-src && lein test leiningen.test.test | grep failures
+    - cd leiningen-src
+    - lein test leiningen.test.test
     - lein version
 
 about:
