@@ -3,7 +3,7 @@ setlocal EnableDelayedExpansion
 
 call mamba install -y leiningen
 if errorlevel 1 exit 1
-set "PATH=%PREFIX%\Scripts;%PATH%"
+set "PATH=%BUILD_PREFIX%\Scripts;%PATH%"
 call :bootstrap_leiningen
 call :prepare_licenses
 
