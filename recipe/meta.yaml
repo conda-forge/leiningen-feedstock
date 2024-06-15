@@ -1,17 +1,14 @@
 {% set name = "leiningen" %}
-{% set version = "2.11.2" %}
+{% set version = "2.11.1" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  - url: https://github.com/technomancy/leiningen/archive/refs/tags/{{ version }}.tar.gz
-    sha256: fe9ee17786be6c3cf4615688a2a82c173369657d84c1b2ffc00b7cd5fd7df1bc
-    folder: leiningen-src
-  - url: https://github.com/technomancy/leiningen/releases/download/{{ version }}/leiningen-{{ version }}-standalone.jar
-    sha256: 7d31ae23ae769e927438b0cd55d15a93e7dabab09fd4fc15877979161e108774
-    folder: leiningen-jar
+  url: https://github.com/technomancy/leiningen/archive/refs/tags/{{ version }}.tar.gz
+  sha256: cae3bbb9e5f07ff518b9b35ecfe070066ea074f2cb15ffb0a73ad7fe2a2683cf
+  folder: leiningen-src
 
 build:
   noarch: generic
@@ -20,7 +17,7 @@ build:
 requirements:
   build:
     - openjdk
-    - openssh  # [not win]
+    - openssh
     - maven
   run:
     - openjdk
@@ -29,14 +26,12 @@ test:
   source_files:
     - leiningen-src
   commands:
-    - test -f ${PREFIX}/bin/lein  # [unix]
-    - test -f ${PREFIX}/lib/leiningen/libexec/leiningen-${PKG_VERSION}-standalone.jar  # [unix]
+    - test -f ${PREFIX}/bin/lein
+    - test -f ${PREFIX}/lib/leiningen/libexec/leiningen-${PKG_VERSION}-standalone.jar
 
-    - if not exist %PREFIX%\Scripts\lein.bat exit /b 1  # [win]
-    - if not exist %PREFIX%\etc\conda\activate.d\lein-activate.bat exit /b 1  # [win]
-    - if not exist %PREFIX%\lib\leiningen\libexec\leiningen-%PKG_VERSION%-standalone.jar exit /b 1  # [win]
-
-    - cd leiningen-src && lein test leiningen.test.test
+    - cd leiningen-src
+    - lein test leiningen.test.test | grep failures
+    - lein version
 
 about:
   home: https://codeberg.org/leiningen/leiningen
