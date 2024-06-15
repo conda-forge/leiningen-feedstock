@@ -18,6 +18,7 @@ goto :EOF
 :bootstrap_leiningen
 cd "%SRC_DIR%"\leiningen-src
   echo "Bootstrapping ...
+  set "LEIN_JAR=%BUILD_PREFIX%\lib\leiningen\libexec\leiningen-%PKG_VERSION%-standalone.jar"
   %RECIPE_DIR%\scripts\lein bootstrap > nul
   if errorlevel 1 exit 1
   echo "Third party licenses ...
