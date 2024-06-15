@@ -16,7 +16,7 @@ build:
 requirements:
   build:
     - openjdk
-    - openssh  # [not win]
+    - openssh  # [unix]
     - maven
   run:
     - openjdk
