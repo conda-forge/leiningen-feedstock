@@ -49,7 +49,7 @@ mkdir %LIBEXEC_DIR%
 copy %RECIPE_DIR%\scripts\lein.bat %PREFIX%\Scripts\lein.bat > nul
 if errorlevel 1 exit 1
 
-install -m644 %_TARGET%\leiningen-*-standalone.jar %LIBEXEC_DIR%
+install -m644 %_TARGET%\leiningen-%PKG_VERSION%-standalone.jar %LIBEXEC_DIR%
 goto :EOF
 
 :install_conda_scripts
