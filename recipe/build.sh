@@ -24,8 +24,10 @@ install_leiningen() {
 # --- Main ---
 
 # Install the latest conda version of leiningen
-# mamba install -y leiningen
-install_leiningen "${PREFIX}" "${SRC_DIR}"/leiningen-jar "${PKG_VERSION}"
+mamba install -y leiningen
+# This is used in case the previous conda version cannot build from source
+# Download the upstream distribution package into leiningen-jar in meta.yaml
+# install_leiningen "${PREFIX}" "${SRC_DIR}"/leiningen-jar "${PKG_VERSION}"
 
 # Create bootstrap from source and extract the THIRD-PARTY.txt file
 cd "${SRC_DIR}"/leiningen-src/leiningen-core
