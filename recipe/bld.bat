@@ -9,7 +9,7 @@ call :prepare_licenses
 
 call :build_uberjar
 
-call :install_leiningen "%SRC_DIR%\leiningen-src\target" "%PREFIX%"
+call :install_leiningen "%SRC_DIR%\leiningen-src\target" %PREFIX%
 call :install_conda_scripts
 
 goto :EOF
@@ -37,6 +37,7 @@ cd "%SRC_DIR%"\leiningen-src
 goto :EOF
 
 :install_leiningen
+setlocal EnableDelayedExpansion
 set "_target=%~1"
 set "_prefix=%~2"
 
@@ -61,6 +62,7 @@ for /f "delims=" %%i in (%lein_file%) do (
     )
 )
 move /Y "%temp_file%" "%lein_file%"
+endlocal
 goto :EOF
 
 :install_conda_scripts
