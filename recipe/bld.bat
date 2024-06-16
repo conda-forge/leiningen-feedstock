@@ -50,6 +50,7 @@ mkdir %PREFIX%\Scripts
 mkdir %LIBEXEC_DIR%
 
 copy %TARGET%\leiningen-%PKG_VERSION%-standalone.jar %LIBEXEC_DIR%
+dir %LIBEXEC_DIR%
 copy %RECIPE_DIR%\scripts\lein.bat %PREFIX%\Scripts\lein.bat > nul
 
 set "lein_file=%PREFIX%\Scripts\lein.bat"
