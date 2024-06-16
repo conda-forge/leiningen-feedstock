@@ -3,9 +3,8 @@ setlocal EnableDelayedExpansion
 
 :: call mamba install -y leiningen
 call :install_leiningen "%SRC_DIR%\leiningen-jar" "%BUILD_PREFIX%"
-if errorlevel 1 exit 1
 set "PATH=%BUILD_PREFIX%\Scripts;%BUILD_PREFIX%\bin;%PATH%"
-call :bootstrap_leiningen
+call :bootstrap_leiningen "%BUILD_PREFIX%"
 call :prepare_licenses
 
 call :build_uberjar
@@ -18,9 +17,10 @@ goto :EOF
 :: --- Functions ---
 :bootstrap_leiningen
 cd "%SRC_DIR%"\leiningen-src
+  set "_PREFIX=%~1"
   echo "Bootstrapping ..."
-  set "LEIN_JAR=%BUILD_PREFIX%\lib\leiningen\libexec\leiningen-%PKG_VERSION%-standalone.jar"
-  %RECIPE_DIR%\scripts\lein bootstrap > nul
+  set "LEIN_JAR=%_PREFIX%\lib\leiningen\libexec\leiningen-%PKG_VERSION%-standalone.jar"
+  call lein bootstrap > nul
   if errorlevel 1 exit 1
   echo "Third party licenses ..."
   call mvn license:add-third-party -Dlicense.thirdPartyFile=THIRD-PARTY.txt > nul
