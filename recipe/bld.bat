@@ -16,16 +16,18 @@ goto :EOF
 
 :: --- Functions ---
 :bootstrap_leiningen
+setlocal
+set "PREFIX=%~1"
 cd "%SRC_DIR%"\leiningen-src
-  set "_PREFIX=%~1"
   echo "Bootstrapping ..."
-  set "LEIN_JAR=%_PREFIX%\lib\leiningen\libexec\leiningen-%PKG_VERSION%-standalone.jar"
+  set "LEIN_JAR=%PREFIX%\lib\leiningen\libexec\leiningen-%PKG_VERSION%-standalone.jar"
   call lein bootstrap > nul
   if errorlevel 1 exit 1
   echo "Third party licenses ..."
   call mvn license:add-third-party -Dlicense.thirdPartyFile=THIRD-PARTY.txt > nul
   if errorlevel 1 exit 1
-  cd %SRC_DIR%
+cd %SRC_DIR%
+endlocal
 goto :EOF
 
 :build_uberjar
