@@ -33,7 +33,7 @@ test:
     - if not exist %PREFIX%\Scripts\lein.bat exit /b 1  # [win]
 
     - cd leiningen-src && lein test leiningen.test.test  # [unix]
-    - lein version  # [unix]
+    - lein version
 
 about:
   home: https://codeberg.org/leiningen/leiningen
