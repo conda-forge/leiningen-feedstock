@@ -46,10 +46,10 @@ mkdir %_PREFIX%\Scripts
 set "LIBEXEC_DIR=%_PREFIX%\lib\leiningen\libexec"
 mkdir %LIBEXEC_DIR%
 
-copy %RECIPE_DIR%\scripts\lein.bat %PREFIX%\Scripts\lein.bat > nul
+copy %RECIPE_DIR%\scripts\lein.bat %_PREFIX%\Scripts\lein.bat > nul
 if errorlevel 1 exit 1
 
-set "lein_file=%PREFIX%\Scripts\lein.bat"
+set "lein_file=%_PREFIX%\Scripts\lein.bat"
 for /f "delims=" %%i in (%lein_file%) do (
     set "line=%%i"
     if "!line:~0,13!"=="set LEIN_VERSION" (
