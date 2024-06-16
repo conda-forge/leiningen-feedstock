@@ -16,18 +16,16 @@ goto :EOF
 
 :: --- Functions ---
 :bootstrap_leiningen
-setlocal
-set "PREFIX=%~1"
+set "_prefix=%~1"
 cd "%SRC_DIR%"\leiningen-src\leiningen-core
   echo "Bootstrapping ..."
-  set "LEIN_JAR=%PREFIX%\lib\leiningen\libexec\leiningen-%PKG_VERSION%-standalone.jar"
+  set "LEIN_JAR=%_prefix%\lib\leiningen\libexec\leiningen-%PKG_VERSION%-standalone.jar"
   call lein bootstrap > nul
   if errorlevel 1 exit 1
   echo "Third party licenses ..."
   call mvn license:add-third-party -Dlicense.thirdPartyFile=THIRD-PARTY.txt > nul
   if errorlevel 1 exit 1
 cd %SRC_DIR%
-endlocal
 goto :EOF
 
 :build_uberjar
@@ -39,21 +37,20 @@ cd "%SRC_DIR%"\leiningen-src
 goto :EOF
 
 :install_leiningen
-setlocal
-set "TARGET=%~1"
-set "PREFIX=%~2"
+set "_target=%~1"
+set "_prefix=%~2"
 
-set "LIBEXEC_DIR=%PREFIX%\lib\leiningen\libexec"
+mkdir %_prefix%\Scripts
+mkdir %_prefix%\lib
+mkdir %_prefix%\lib\leiningen
+mkdir %_prefix%\lib\leiningen\libexec
 
-mkdir %PREFIX%\Scripts
-mkdir %PREFIX%\lib
-mkdir %PREFIX%\lib\leiningen
-mkdir %PREFIX%\lib\leiningen\libexec
+copy %_target%\leiningen-%PKG_VERSION%-standalone.jar %_prefix%\lib\leiningen\libexec > nul
+dir %_prefix%\lib\leiningen\libexec\leiningen-%PKG_VERSION%-standalone.jar
+copy %RECIPE_DIR%\scripts\lein.bat %_prefix%\Scripts\lein.bat > nul
+dir %_prefix%\Scripts\lein.bat
 
-copy %TARGET%\leiningen-%PKG_VERSION%-standalone.jar %LIBEXEC_DIR%
-copy %RECIPE_DIR%\scripts\lein.bat %PREFIX%\Scripts\lein.bat > nul
-
-set "lein_file=%PREFIX%\Scripts\lein.bat"
+set "lein_file=%_prefix%\Scripts\lein.bat"
 set "temp_file=%TEMP%\lein.bat"
 for /f "delims=" %%i in (%lein_file%) do (
     set "line=%%i"
@@ -64,7 +61,6 @@ for /f "delims=" %%i in (%lein_file%) do (
     )
 )
 move /Y "%temp_file%" "%lein_file%"
-endlocal
 goto :EOF
 
 :install_conda_scripts
