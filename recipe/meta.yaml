@@ -1,5 +1,5 @@
 {% set name = "leiningen" %}
-{% set version = "2.11.2" %}
+{% set version = "2.10.0" %}
 
 package:
   name: {{ name|lower }}
@@ -7,12 +7,14 @@ package:
 
 source:
   - url: https://github.com/technomancy/leiningen/archive/refs/tags/{{ version }}.tar.gz
-    sha256: fe9ee17786be6c3cf4615688a2a82c173369657d84c1b2ffc00b7cd5fd7df1bc
+    sha256: 5f4ae6ef2a9665176138730f00ce008b17de96af99a2ce5e4c3f017b2d4d5659
     folder: leiningen-src
+  - url: https://github.com/technomancy/leiningen/releases/download/{{ version }}/leiningen-{{ version }}-standalone.jar
+    sha256: d27299bad34075ac2864d0bd0559f835c6e2c476c0b0a283bcbdb574fdadbb34
+    folder: leiningen-jar
 
 build:
-  noarch: generic
-  number: 4
+  number: 0
 
 requirements:
   build:
@@ -25,10 +27,14 @@ test:
   source_files:
     - leiningen-src
   commands:
-    - test -f ${PREFIX}/bin/lein
-    - test -f ${PREFIX}/lib/leiningen/libexec/leiningen-${PKG_VERSION}-standalone.jar
-    - cd leiningen-src
-    - lein test leiningen.test.test
+    - test -f ${PREFIX}/bin/lein  # [unix]
+    - test -f ${PREFIX}/lib/leiningen/libexec/leiningen-{{ version }}-standalone.jar  # [unix]
+
+    - if not exist %PREFIX%\Scripts\lein.bat exit /b 1  # [win]
+    - if not exist %PREFIX%\etc\conda\activate.d\lein-activate.bat exit /b 1  # [win]
+    - if not exist %PREFIX%\lib\leiningen\libexec\leiningen-{{ version }}-standalone.jar exit /b 1  # [win]
+
+    - cd leiningen-src && lein test leiningen.test.test
     - lein version
 
 about:

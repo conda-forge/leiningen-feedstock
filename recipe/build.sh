@@ -22,9 +22,7 @@ install_leiningen() {
 }
 
 # --- Main ---
-
-# Install the latest conda version of leiningen
-mamba install -y leiningen
+install_leiningen "${PREFIX}" "${SRC_DIR}"/leiningen-jar "${PKG_VERSION}"
 
 # Create bootstrap from source and extract the THIRD-PARTY.txt file
 cd "${SRC_DIR}"/leiningen-src/leiningen-core
