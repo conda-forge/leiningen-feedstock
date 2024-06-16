@@ -1,9 +1,11 @@
 @echo off
 setlocal EnableDelayedExpansion
 
-:: call mamba install -y leiningen
-set "_boot-prefix=%SRC_DIR%\_conda-bootstrap"
-call :install_leiningen "%SRC_DIR%\leiningen-jar" "%_boot-prefix%"
+call mamba install -y leiningen
+set "_boot-prefix=%BUILD_PREFIX%"
+:: This is used when the previous conda verison cannot build from source
+:: Download the upstream distribution in meta.yaml
+:: call :install_leiningen "%SRC_DIR%\leiningen-jar" "%_boot-prefix%"
 set "PATH=%_boot-prefix%\Scripts;%PATH%"
 call :bootstrap_leiningen %_boot-prefix%
 call :prepare_licenses
