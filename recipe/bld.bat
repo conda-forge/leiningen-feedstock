@@ -39,7 +39,7 @@ cd "%SRC_DIR%"\leiningen-src
 goto :EOF
 
 :install_leiningen
-sel local
+setlocal
 set "TARGET=%~1"
 set "PREFIX=%~2"
 
