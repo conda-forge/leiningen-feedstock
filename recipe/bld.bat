@@ -18,7 +18,7 @@ goto :EOF
 :bootstrap_leiningen
 setlocal
 set "PREFIX=%~1"
-cd "%SRC_DIR%"\leiningen-src
+cd "%SRC_DIR%"\leiningen-src\leiningen-core
   echo "Bootstrapping ..."
   set "LEIN_JAR=%PREFIX%\lib\leiningen\libexec\leiningen-%PKG_VERSION%-standalone.jar"
   call lein bootstrap > nul
