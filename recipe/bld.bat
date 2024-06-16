@@ -2,15 +2,16 @@
 setlocal EnableDelayedExpansion
 
 :: call mamba install -y leiningen
-call :install_leiningen "%SRC_DIR%\leiningen-jar" "%BUILD_PREFIX%"
-set "PATH=%BUILD_PREFIX%\Scripts;%BUILD_PREFIX%\bin;%PATH%"
-call :bootstrap_leiningen "%BUILD_PREFIX%"
+set "_boot-prefix=%SRC_DIR%\_conda-bootstrap"
+call :install_leiningen "%SRC_DIR%\leiningen-jar" "%_boot-prefix%"
+set "PATH=%_boot-prefix%\Scripts;%PATH%"
+call :bootstrap_leiningen %_boot-prefix%
 call :prepare_licenses
 
 call :build_uberjar
 
-call :install_leiningen "%SRC_DIR%\leiningen-src\target" %PREFIX%
-call :install_conda_scripts
+call :install_leiningen "%SRC_DIR%\leiningen-src\target" "%PREFIX%"
+call :install_conda_scripts "%PREFIX%"
 
 goto :EOF
 
@@ -66,8 +67,10 @@ endlocal
 goto :EOF
 
 :install_conda_scripts
-mkdir %PREFIX%\etc\conda\activate.d
-copy %RECIPE_DIR%\scripts\activate.bat %ACTIVATE_DIR%\lein-activate.bat > nul
+setlocal
+set "_prefix=%~1"
+mkdir %_prefix%\etc\conda\activate.d
+copy %RECIPE_DIR%\scripts\activate.bat %_prefix%\etc\conda\activate.d\lein-activate.bat > nul
 if errorlevel 1 exit 1
 goto :EOF
 
