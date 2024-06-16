@@ -37,19 +37,20 @@ cd "%SRC_DIR%"\leiningen-src
 goto :EOF
 
 :install_leiningen
-set "_TARGET=%~1"
-set "_PREFIX=%~2"
+sel local
+set "TARGET=%~1"
+set "PREFIX=%~2"
 
-mkdir %_PREFIX%\lib
-mkdir %_PREFIX%\Scripts
+set "LIBEXEC_DIR=%PREFIX%\lib\leiningen\libexec"
 
-set "LIBEXEC_DIR=%_PREFIX%\lib\leiningen\libexec"
+mkdir %PREFIX%\lib
+mkdir %PREFIX%\Scripts
 mkdir %LIBEXEC_DIR%
 
+copy %TARGET%\leiningen-%PKG_VERSION%-standalone.jar %LIBEXEC_DIR%
 copy %RECIPE_DIR%\scripts\lein.bat %PREFIX%\Scripts\lein.bat > nul
-if errorlevel 1 exit 1
 
-set "lein_file=%_PREFIX%\Scripts\lein.bat"
+set "lein_file=%PREFIX%\Scripts\lein.bat"
 set "temp_file=%TEMP%\lein.bat"
 for /f "delims=" %%i in (%lein_file%) do (
     set "line=%%i"
@@ -60,8 +61,7 @@ for /f "delims=" %%i in (%lein_file%) do (
     )
 )
 move /Y "%temp_file%" "%lein_file%"
-
-install -m644 %_TARGET%\leiningen-%PKG_VERSION%-standalone.jar %LIBEXEC_DIR%
+endlocal
 goto :EOF
 
 :install_conda_scripts
