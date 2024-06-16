@@ -45,12 +45,12 @@ set "PREFIX=%~2"
 
 set "LIBEXEC_DIR=%PREFIX%\lib\leiningen\libexec"
 
-mkdir %PREFIX%\lib
 mkdir %PREFIX%\Scripts
-mkdir %LIBEXEC_DIR%
+mkdir %PREFIX%\lib
+mkdir %PREFIX%\lib\leiningen
+mkdir %PREFIX%\lib\leiningen\libexec
 
 copy %TARGET%\leiningen-%PKG_VERSION%-standalone.jar %LIBEXEC_DIR%
-dir %LIBEXEC_DIR%
 copy %RECIPE_DIR%\scripts\lein.bat %PREFIX%\Scripts\lein.bat > nul
 
 set "lein_file=%PREFIX%\Scripts\lein.bat"
