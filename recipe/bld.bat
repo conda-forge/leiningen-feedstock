@@ -35,7 +35,7 @@ goto :EOF
 cd "%SRC_DIR%"\leiningen-src
   set "DEBUG=1"
   echo "Uberjar ..."
-  call bin\lein uberjar > nul
+  call bin\lein uberjar
   if errorlevel 1 exit 1
   cd %SRC_DIR%
 goto :EOF
