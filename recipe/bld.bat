@@ -2,7 +2,8 @@
 setlocal EnableDelayedExpansion
 
 call mamba install -y leiningen
-for /f "tokens=2 delims= " %%v in ('mamba list leiningen | findstr leiningen') do set "_pkg_version=%%v"
+mamba list leiningen | findstr leiningen
+for /f "tokens=2 delims= " %%v in ('mamba list leiningen ^| findstr leiningen') do set "_pkg_version=%%v"
 set "_boot-prefix=%BUILD_PREFIX%"
 :: This is used when the previous conda verison cannot build from source
 :: Download the upstream distribution in meta.yaml
