@@ -33,6 +33,7 @@ goto :EOF
 
 :build_uberjar
 cd "%SRC_DIR%"\leiningen-src
+  set "DEBUG=1"
   echo "Uberjar ..."
   call bin\lein uberjar > nul
   if errorlevel 1 exit 1
