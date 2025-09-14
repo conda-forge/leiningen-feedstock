@@ -23,7 +23,7 @@ set "_prefix=%~1"
 cd "%SRC_DIR%"\leiningen-src\leiningen-core
   echo "Bootstrapping ..."
   set "LEIN_JAR=%_prefix%\lib\leiningen\libexec\leiningen-%PKG_VERSION%-standalone.jar"
-  call lein bootstrap > nul
+  call lein bootstrap
   if errorlevel 1 exit 1
   echo "Third party licenses ..."
   call mvn license:add-third-party -Dlicense.thirdPartyFile=THIRD-PARTY.txt > nul
