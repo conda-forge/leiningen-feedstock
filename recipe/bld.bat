@@ -2,6 +2,7 @@
 setlocal EnableDelayedExpansion
 
 call mamba install -y leiningen
+for /f "tokens=2 delims= " %%v in ('mamba list leiningen | findstr leiningen') do set "_pkg_version=%%v"
 set "_boot-prefix=%BUILD_PREFIX%"
 :: This is used when the previous conda verison cannot build from source
 :: Download the upstream distribution in meta.yaml
@@ -22,7 +23,7 @@ goto :EOF
 set "_prefix=%~1"
 cd "%SRC_DIR%"\leiningen-src\leiningen-core
   echo "Bootstrapping ..."
-  set "LEIN_JAR=%_prefix%\lib\leiningen\libexec\leiningen-%PKG_VERSION%-standalone.jar"
+  set "LEIN_JAR=%_prefix%\lib\leiningen\libexec\leiningen-%_pkg_version%-standalone.jar"
   call lein bootstrap
   if errorlevel 1 exit 1
   echo "Third party licenses ..."
