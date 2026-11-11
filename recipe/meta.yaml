@@ -1,5 +1,5 @@
 {% set name = "leiningen" %}
-{% set version = "2.13.0" %}
+{% set version = "2.13.1" %}
 
 package:
   name: {{ name|lower }}
@@ -7,15 +7,17 @@ package:
 
 source:
   - url: https://github.com/technomancy/leiningen/archive/refs/tags/{{ version }}.tar.gz
-    sha256: a71aaf44eaf7796198943bd6db7662c99664bb6441f8dc7216d4a87fa4ea4dad
+    sha256: 28bd0f099ad7e155c6f2880b118fbab591fa43baf0baff862bd402249825d88b
     folder: leiningen-src
-  # This is used when the previous conda version cannot build from source
-  # - url: https://github.com/technomancy/leiningen/releases/download/{{ version }}/leiningen-{{ version }}-standalone.jar
-  #   sha256: 7d31ae23ae769e927438b0cd55d15a93e7dabab09fd4fc15877979161e108774
-  #   folder: leiningen-jar
+  # Upstream standalone jar, used only as the bootstrap lein (never packaged)
+  - url: https://github.com/technomancy/leiningen/releases/download/{{ version }}/leiningen-{{ version }}-standalone.jar
+    sha256: 2e4c36cbaef717d0fa589a1f95e4c526a1cb6c35b48dc92e6dbb30d6f8595b5c
+    folder: leiningen-jar
 
 build:
   number: 0
+  skip: true  # [target_platform == "linux-riscv64"]
+  skip: true  # [target_platform == "win-arm64"]
 
 requirements:
   build:
@@ -38,6 +40,9 @@ test:
 
     - cd leiningen-src && lein test leiningen.test.test
     - lein version
+    - lein version | grep "Leiningen {{ version }}"  # [unix]
+    - test "$(ls ${PREFIX}/lib/leiningen/libexec)" = "leiningen-{{ version }}-standalone.jar"  # [unix]
+    - grep -q 'LEIN_VERSION="{{ version }}"' ${PREFIX}/bin/lein  # [unix]
 
 about:
   home: https://codeberg.org/leiningen/leiningen
