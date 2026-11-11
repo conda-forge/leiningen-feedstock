@@ -17,6 +17,7 @@ source:
 build:
   number: 0
   skip: true  # [target_platform == "linux-riscv64"]
+  skip: true  # [target_platform == "win-arm64"]
 
 requirements:
   build:
