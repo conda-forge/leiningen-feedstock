@@ -28,22 +28,18 @@ install_leiningen() {
 
 # --- Main ---
 
-# Bootstrap lein from the upstream standalone jar, kept outside ${PREFIX}
-BOOTSTRAP="${SRC_DIR}/_bootstrap"
-install_leiningen "${BOOTSTRAP}" "${SRC_DIR}"/leiningen-jar "${PKG_VERSION}" "${BOOTSTRAP}/lib/leiningen/libexec"
-export PATH="${BOOTSTRAP}/bin:${PATH}"
-lein version
+# Bootstrap lein from the conda leiningen in BUILD_PREFIX (never lands in PREFIX).
+# CONDA_PREFIX is overridden because the lein script locates its jar via
+# ${CONDA_PREFIX}/lib/leiningen/libexec, and during conda-build that is the host prefix.
+blein() { CONDA_PREFIX="${BUILD_PREFIX}" "${BUILD_PREFIX}/bin/lein" "$@"; }
+blein version
 
 # Create bootstrap from source and extract the THIRD-PARTY.txt file
 cd "${SRC_DIR}"/leiningen-src/leiningen-core
   sed -i -E "s/[0-9.]+-SNAPSHOT/${PKG_VERSION}/g" pom.xml project.clj
-  lein bootstrap > _lein_bootstrap.log 2>&1 || { echo "lein bootstrap failed, log tail:"; tail -n 200 _lein_bootstrap.log; exit 1; }
+  blein bootstrap > _lein_bootstrap.log 2>&1 || { echo "lein bootstrap failed, log tail:"; tail -n 200 _lein_bootstrap.log; exit 1; }
   mvn license:add-third-party -Dlicense.thirdPartyFile=THIRD-PARTY.txt > _lein_license.log 2>&1 || { echo "mvn license:add-third-party failed, log tail:"; tail -n 200 _lein_license.log; exit 1; }
 cd "${SRC_DIR}"
-
-# Copy the license files to the recipe directory
-cp "${SRC_DIR}"/leiningen-src/leiningen-core/target/generated-sources/license/THIRD-PARTY.txt "${RECIPE_DIR}"/THIRD-PARTY.txt
-cp "${SRC_DIR}"/leiningen-src/COPYING "${RECIPE_DIR}"/COPYING
 
 # Use bootstrap to build the leiningen package
 cd "${SRC_DIR}"/leiningen-src && sed -i -E "s/[0-9.]+-SNAPSHOT/${PKG_VERSION}/g" bin/lein project.clj && bin/lein uberjar && cd "${SRC_DIR}"

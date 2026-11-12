@@ -1,0 +1,75 @@
+schema_version: 1
+
+context:
+  name: leiningen
+  version: "2.13.1"
+
+package:
+  name: ${{ name | lower }}
+  version: ${{ version }}
+
+source:
+  - url: https://github.com/technomancy/leiningen/archive/refs/tags/${{ version }}.tar.gz
+    sha256: 28bd0f099ad7e155c6f2880b118fbab591fa43baf0baff862bd402249825d88b
+    target_directory: leiningen-src
+  # Fallback: bootstrap from the upstream jar if the conda leiningen cannot build from source
+  # - url: https://github.com/technomancy/leiningen/releases/download/${{ version }}/leiningen-${{ version }}-standalone.jar
+  #   sha256: 2e4c36cbaef717d0fa589a1f95e4c526a1cb6c35b48dc92e6dbb30d6f8595b5c
+  #   target_directory: leiningen-jar
+
+build:
+  number: 1
+  skip:
+    - target_platform == "linux-riscv64"
+    - target_platform == "win-arm64"
+
+requirements:
+  build:
+    - openjdk
+    - maven
+    - if: unix
+      then: sed
+    - leiningen >=2.13.1
+  run:
+    - openjdk
+
+tests:
+  - script:
+      - if: unix
+        then:
+          - test -f ${PREFIX}/bin/lein
+          - test -f ${PREFIX}/lib/leiningen/libexec/leiningen-${{ version }}-standalone.jar
+          - lein version
+          - lein version | grep "Leiningen ${{ version }}"
+          - test "$(ls ${PREFIX}/lib/leiningen/libexec)" = "leiningen-${{ version }}-standalone.jar"
+          - grep -q 'LEIN_VERSION="${{ version }}"' ${PREFIX}/bin/lein
+          - cd leiningen-src && lein test leiningen.test.test
+      - if: win
+        then:
+          - if not exist %PREFIX%\Scripts\lein.bat exit /b 1
+          - if not exist %PREFIX%\etc\conda\activate.d\lein-activate.bat exit /b 1
+          - if not exist %PREFIX%\lib\leiningen\libexec\leiningen-${{ version }}-standalone.jar exit /b 1
+          - call lein version
+          - if errorlevel 1 exit /b 1
+          - cd leiningen-src && call lein test leiningen.test.test
+          - if errorlevel 1 exit /b 1
+    files:
+      source:
+        - leiningen-src/
+
+about:
+  homepage: https://codeberg.org/leiningen/leiningen
+  summary: Leiningen is for automating Clojure projects without setting your hair on fire.
+  description: |
+    "Leiningen!" he shouted. "You're insane! They're not creatures you can
+    fight-they're an elemental-an 'act of God!' Ten miles long, two miles
+    wide-ants, nothing but ants! And every single one of them a fiend from hell..."
+      from Leiningen Versus the Ants by Carl Stephenson
+  license: EPL-1.0
+  license_file:
+    - leiningen-src/COPYING
+    - leiningen-src/leiningen-core/target/generated-sources/license/THIRD-PARTY.txt
+
+extra:
+  recipe-maintainers:
+    - MementoRC
