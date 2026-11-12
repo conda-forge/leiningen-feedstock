@@ -10,10 +10,9 @@ Package license: EPL-1.0
 Summary: Leiningen is for automating Clojure projects without setting your hair on fire.
 
 "Leiningen!" he shouted. "You're insane! They're not creatures you can
-fight—they're an elemental—an 'act of God!' Ten miles long, two miles
-wide—ants, nothing but ants! And every single one of them a fiend from hell..."
+fight-they're an elemental-an 'act of God!' Ten miles long, two miles
+wide-ants, nothing but ants! And every single one of them a fiend from hell..."
   from Leiningen Versus the Ants by Carl Stephenson
-
 
 Current build status
 ====================
