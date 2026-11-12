@@ -55,7 +55,15 @@ tests:
           - if errorlevel 1 exit /b 1
     files:
       source:
-        - leiningen-src/
+        - leiningen-src/project.clj
+        - leiningen-src/src/
+        - leiningen-src/test/
+        - leiningen-src/test_projects/
+        - leiningen-src/leiningen-core/project.clj
+        - leiningen-src/leiningen-core/src/
+        - leiningen-src/leiningen-core/test/
+        - leiningen-src/leiningen-core/dev-resources/
+        - leiningen-src/resources/leiningen/bootclasspath-deps.clj
 
 about:
   homepage: https://codeberg.org/leiningen/leiningen
